@@ -1,0 +1,23 @@
+How to flash the EM/MINI4412 board:
+
+~~~
+I will assume u-boot is already present and working on the iNand. It should be if you got the board from Boardcon. If it isn't, follow the Boardcon guide for flashing u-boot. Their guide assumes you have a Windows machine. Note that it is possible to do this using Linux (I did it), but you're stuck with figuring out where to place the binary blob in the image file using the "dd" tool. I will update this readme if I remember what I did.
+~~~
+
+0) First, install the fastboot/adb android tools on your linux system
+
+1) Connect the EM4412 board to a serial port, open it (baud rate: 115200, default settings)
+2) Turn on the board, press a key when the u-boot prompt comes up.
+3) Go into fastboot mode
+4) Connect the EM4412 board to your computer via usb
+5) Run "adb devices" twice. The board should be listed as attached
+6) Do "sudo fastboot flash <partition> <file>" for every file you wish to flash on the iNand (the partition names are listed in u-boot: kernel, ramdisk, system)
+- On the kernel partition, flash the zImage (available on this git repo)
+- On the ramdisk image, flash the initrd.img image (available on this git repo)
+- On the system image, flash the linux distribution of your choice, I'm using Ubuntu Core 14.04.4 LTS, available here: http://cdimage.ubuntu.com/ubuntu-core/releases/14.04/release/ (armhf image). Decompress the archive into a folder, create a rootfs image by create a disk image ("dd" tool), mount it, transfer the decompressed archive to it, unmount. Your rootfs image should be about 250MB in size. If you do not know how to do this, do some googling first. You can also get in touch with me for a ready-made image (too large to be put on this git repo...).
+
+7) Once flashed, just exit the fastboot mode on the EM4412 (Ctrl-C)
+8) If necessary (depends on your kernel settings), edit the boot args in u-boot
+9) Boot the board. Hope for the best :)
+
+10) Optional, but recommended: once the system is running, use the "dd" tool to resize the system partition to occupy the remaining part of the iNand. By default, the system partition only occupies about 200MB. Just make sure you're not overwriting other partitions or you'll have to follow the above steps again...

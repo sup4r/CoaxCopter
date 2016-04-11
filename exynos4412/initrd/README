@@ -1,0 +1,7 @@
+1) To open the ramdisk image, run
+./open-ramdisk.sh coaxcopter_ramdisk.img
+This will create a ramdisk/ folder that you can then go through and modify to your taste.
+
+2) Once done modifying, run
+./build-ramdisk.sh my_new_ramdisk.img
+This will build a new ramdisk image based on the previously created ramdisk/ folder.
